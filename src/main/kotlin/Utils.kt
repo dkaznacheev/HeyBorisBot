@@ -17,7 +17,7 @@ object Utils {
         val weights = nominations.groupingBy { it.first }.eachCount().toMutableMap()
 
         for (key in weights.keys) {
-            weights[key] = weights[key]!! + 1
+            weights[key] = 2 * weights[key]!! + 1
         }
 
         for (player in players) {
