@@ -2,6 +2,7 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import java.lang.System.currentTimeMillis
 import java.util.*
+import kotlin.math.ceil
 
 object Utils {
     val TIMEZONE = DateTimeZone.forOffsetHours(3)
@@ -16,8 +17,10 @@ object Utils {
     fun weightedVote(players: List<Player>, nominations: List<Pair<Long, Long>>): Player {
         val weights = nominations.groupingBy { it.first }.eachCount().toMutableMap()
 
+        val voteWeight = 1 + ceil(players.size.toDouble() * 0.1).toInt()
+
         for (key in weights.keys) {
-            weights[key] = 2 * weights[key]!! + 1
+            weights[key] = voteWeight * weights[key]!! + 1
         }
 
         for (player in players) {
