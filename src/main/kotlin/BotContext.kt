@@ -11,12 +11,12 @@ class BotContext private constructor(
     val name: String,
     val text: String) {
 
-    fun sendToUser(text: String) {
-        bot.sendMessage(from.id, text)
+    fun sendToUser(text: String, notify: Boolean = false) {
+        bot.sendMessage(from.id, text=text, disableNotification = !notify)
     }
 
-    fun sendToChat(text: String) {
-        bot.sendMessage(chatId, text)
+    fun sendToChat(text: String, notify: Boolean = false) {
+        bot.sendMessage(chatId, text=text, disableNotification = !notify)
     }
 
     companion object {

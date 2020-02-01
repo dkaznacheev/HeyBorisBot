@@ -75,7 +75,7 @@ class HeyBorisBot(p: Properties) {
         if (winner == null) {
             sendToUser(strings.get("not_enough_players"))
         } else {
-            sendToChat(strings.showWinner(winner.userName, firstTime))
+            sendToChat(strings.showWinner(winner.userName, firstTime), notify = true)
         }
     }
 
