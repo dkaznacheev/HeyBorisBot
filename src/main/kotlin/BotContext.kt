@@ -12,7 +12,7 @@ class BotContext private constructor(
     val text: String) {
 
     fun sendToUser(text: String, notify: Boolean = false) {
-        bot.sendMessage(from.id, text=text, disableNotification = !notify)
+        bot.sendMessage(chatId, text=text, disableNotification = !notify) // TODO CHANGE TO USERID
     }
 
     fun sendToChat(text: String, notify: Boolean = false) {
