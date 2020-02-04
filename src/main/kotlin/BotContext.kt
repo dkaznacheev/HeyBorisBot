@@ -2,6 +2,8 @@ import me.ivmg.telegram.Bot
 import me.ivmg.telegram.entities.Message
 import me.ivmg.telegram.entities.User
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 
 class BotContext private constructor(
     private val bot: Bot,
@@ -19,7 +21,14 @@ class BotContext private constructor(
         bot.sendMessage(chatId, text=text, disableNotification = !notify)
     }
 
+    fun log(command: String) {
+        val timestamp = logFormat.print(Utils.now())
+        println("$timestamp /$command by $name (${from.id}) in $chatId, text: {$text}")
+    }
+
     companion object {
+        val logFormat: DateTimeFormatter = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss").withZone(Utils.TIMEZONE)
+
         fun of(bot: Bot, message: Message): BotContext? {
             val from = message.from?: return null
             val name = from.username ?: from.firstName

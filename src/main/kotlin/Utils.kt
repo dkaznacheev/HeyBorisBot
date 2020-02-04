@@ -5,12 +5,16 @@ import java.util.*
 import kotlin.math.ceil
 
 object Utils {
-    val TIMEZONE = DateTimeZone.forOffsetHours(3)
+    val TIMEZONE: DateTimeZone = DateTimeZone.forOffsetHours(3)
     const val MIN_PLAYERS = 2
     private val random = Random(currentTimeMillis())
 
+    fun now(): DateTime {
+        return DateTime.now(TIMEZONE)
+    }
+
     fun today(): DateTime {
-        return DateTime.now(DateTimeZone.forOffsetHours(3)).withTimeAtStartOfDay()
+        return now().withTimeAtStartOfDay()
     }
 
     // TODO get weights in SQL query

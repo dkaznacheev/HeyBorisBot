@@ -11,7 +11,9 @@ fun Dispatcher.command(
     command: String,
     body: BotContext.() -> Unit) {
     addHandler(CommandHandler(command) { bot, update ->
-        update.message?.let { message -> BotContext.of(bot, message)?.let(body) }
+        update.message?.let { message ->
+            BotContext.of(bot, message)?.also { it.log(command) }?.let(body)
+        }
     })
 }
 
