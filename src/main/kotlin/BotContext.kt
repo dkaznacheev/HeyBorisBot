@@ -1,6 +1,6 @@
-import me.ivmg.telegram.Bot
-import me.ivmg.telegram.entities.Message
-import me.ivmg.telegram.entities.User
+import com.github.kotlintelegrambot.Bot
+import com.github.kotlintelegrambot.entities.Message
+import com.github.kotlintelegrambot.entities.User
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
@@ -19,6 +19,12 @@ class BotContext private constructor(
 
     fun sendToChat(text: String, notify: Boolean = false) {
         bot.sendMessage(chatId, text=text, disableNotification = !notify)
+    }
+
+    fun sendNewYearSticker() {
+        bot.sendSticker(chatId,
+            "CAACAgIAAxUAAV_eTUUwAdZJhkNiBgMVxx13mkksAAISAQACzhp2CybLcQgz7jTaHgQ",
+            replyMarkup = null)
     }
 
     fun log(command: String) {

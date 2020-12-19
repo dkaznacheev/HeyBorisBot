@@ -17,6 +17,11 @@ object Utils {
         return now().withTimeAtStartOfDay()
     }
 
+    fun isNewYear(): Boolean {
+        val today = today()
+        return today.dayOfYear == today.dayOfYear().minimumValue
+    }
+
     // TODO get weights in SQL query
     fun weightedVote(players: List<Player>, nominations: List<Pair<Long, Long>>): Player {
         val weights = nominations.groupingBy { it.first }.eachCount().toMutableMap()

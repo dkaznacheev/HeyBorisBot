@@ -1,20 +1,18 @@
-import me.ivmg.telegram.bot
-import me.ivmg.telegram.Bot
-import me.ivmg.telegram.dispatch
-import me.ivmg.telegram.dispatcher.Dispatcher
-import me.ivmg.telegram.dispatcher.handlers.CommandHandler
+import com.github.kotlintelegrambot.bot
+import com.github.kotlintelegrambot.Bot
+import com.github.kotlintelegrambot.dispatch
+import com.github.kotlintelegrambot.dispatcher.Dispatcher
+import com.github.kotlintelegrambot.dispatcher.command
 import java.io.File
 import java.io.FileInputStream
 import java.util.*
 
-fun Dispatcher.command(
+fun Dispatcher.contextCommand(
     command: String,
     body: BotContext.() -> Unit) {
-    addHandler(CommandHandler(command) { bot, update ->
-        update.message?.let { message ->
-            BotContext.of(bot, message)?.also { it.log(command) }?.let(body)
-        }
-    })
+    this.command(command) {
+        BotContext.of(bot, message)?.also { it.log(command) }?.let(body)
+    }
 }
 
 class HeyBorisBot(p: Properties) {
@@ -37,12 +35,12 @@ class HeyBorisBot(p: Properties) {
         bot = bot {
             token = telegramToken
             dispatch {
-                command(commands.get("help")) { help() }
-                command(commands.get("all_stats")) { stats() }
-                command(commands.get("personal_stats")) { playerStats() }
-                command(commands.get("register")) { playerReg() }
-                command(commands.get("nominate")) { nominate() }
-                command(commands.get("winner")) { winner() }
+                contextCommand(commands.get("help")) { help() }
+                contextCommand(commands.get("all_stats")) { stats() }
+                contextCommand(commands.get("personal_stats")) { playerStats() }
+                contextCommand(commands.get("register")) { playerReg() }
+                contextCommand(commands.get("nominate")) { nominate() }
+                contextCommand(commands.get("winner")) { winner() }
             }
         }
     }
@@ -76,9 +74,18 @@ class HeyBorisBot(p: Properties) {
         val (winner, firstTime) = h.getTodayWinner(chatId, day)
         if (winner == null) {
             sendToUser(strings.get("not_enough_players"))
-        } else {
-            sendToChat(strings.showWinner(winner.userName, firstTime), notify = true)
+            return
         }
+
+        if (Utils.isNewYear()) {
+            sendToChat(strings.showYearWinner(winner.userName, firstTime), notify = true)
+            if (firstTime) {
+                sendNewYearSticker()
+            }
+            return
+        }
+
+        sendToChat(strings.showWinner(winner.userName, firstTime), notify = true)
     }
 
     private fun BotContext.nominate() {

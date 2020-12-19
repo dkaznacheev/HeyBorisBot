@@ -61,6 +61,14 @@ class BotStrings(stringsPath: String): StringsHolder(stringsPath){
             get("winner_repeated", userName)
         }
     }
+
+    fun showYearWinner(userName: String, firstTime: Boolean): String {
+        return if (firstTime) {
+            get("year_winner_initial", userName)
+        } else {
+            get("year_winner_repeated", userName)
+        }
+    }
 }
 
 class BotCommands(stringsPath: String): StringsHolder(stringsPath) {
